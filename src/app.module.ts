@@ -10,12 +10,15 @@ import { AuthModule } from './auth/auth.module';
   imports: [
     PostModule,
     TypeOrmModule.forRoot({
-      type: 'mongodb',
+      type: 'mysql',
       host: 'localhost',
-      port: 27017,
-      database: 'my-web-blog',
-      //username: 'root',
-      //password: '123456',
+      port: 5000,
+      database: 'MyDatabase',
+      username: 'root',
+      password: '123456',
+      //url: 'jdbc:mysql://localhost:5000/MyDatabase'y
+      //useUnifiedTopology: true,
+      //family:4,
       autoLoadEntities: true,
       synchronize: true,
     }),
