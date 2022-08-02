@@ -12,13 +12,10 @@ import { AuthModule } from './auth/auth.module';
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
-      port: 5000,
-      database: 'MyDatabase',
+      // port: 3306,
+      database: 'web-blog',
       username: 'root',
       password: '123456',
-      //url: 'jdbc:mysql://localhost:5000/MyDatabase'y
-      //useUnifiedTopology: true,
-      //family:4,
       autoLoadEntities: true,
       synchronize: true,
     }),

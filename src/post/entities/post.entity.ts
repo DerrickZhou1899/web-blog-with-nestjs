@@ -7,8 +7,8 @@ import { Exclude } from 'class-transformer';
 
 @Entity('posts')
 export class Post {
-  @ObjectIdColumn()
-  key: ObjectID;
+  @PrimaryGeneratedColumn()
+  id: number;
   @Column()
   title: string;
   @Column()
@@ -19,9 +19,9 @@ export class Post {
   createOn: Date;
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   modifyOn: Date;
-  @Column()
+  @Column({ default: 'image' })
   mainImageUrl: string;
-  @Column()
+  @Column({ default: 1 })
   @Exclude()
   userId: number;
   @Column({ default: 1 })
@@ -31,7 +31,7 @@ export class Post {
   })
   @JoinColumn({
     name: 'userId',
-    referencedColumnName: 'key'
+    referencedColumnName: 'id',
   })
   user: User;
   @ManyToOne(() => Category, (category) => category.post, {
@@ -39,14 +39,15 @@ export class Post {
   })
   @JoinColumn({
     name: 'categoryId',
-    referencedColumnName: 'key'
+    referencedColumnName: 'id',
   })
   category: Category;
   @BeforeInsert()
-  slugifyPost(){
-    this.slug = slugify(this.title.substring(0,20),{ //0 - 20 ký tự thì stop
+  slugifyPost() {
+    this.slug = slugify(this.title.substring(0, 20), {
+      //0 - 20 ký tự thì stop
       lower: true,
       replacement: '_',
-    })
+    });
   }
 }

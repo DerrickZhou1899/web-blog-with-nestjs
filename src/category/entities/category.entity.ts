@@ -1,10 +1,10 @@
 import { Post } from 'src/post/entities/post.entity';
-import { Column, Entity, ObjectID, ObjectIdColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('categories')
 export class Category {
-  @ObjectIdColumn()
-  key: ObjectID;
+  @PrimaryGeneratedColumn()
+  id: number;
   @Column()
   title: string;
   @Column()

@@ -1,16 +1,16 @@
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
-import { Category } from "src/category/entities/category.entity";
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { Category } from '../../category/entities/category.entity';
 
 export class CreatePostDto {
-  @IsNotEmpty({message:"Post title empty"})
+  @IsNotEmpty({ message: 'Post title empty' })
   @IsString()
   title: string;
-  @IsNotEmpty({message:"Post content empty"})
+  @IsNotEmpty({ message: 'Post content empty' })
   @IsString()
   content: string;
   @IsOptional()
   @IsString()
   mainImageUrl: string;
   @IsOptional()
-  category: Category
+  category: Category;
 }

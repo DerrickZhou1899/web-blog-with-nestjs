@@ -1,13 +1,12 @@
 import { Post } from 'src/post/entities/post.entity';
-import { BeforeInsert, Column, Entity, ObjectID, ObjectIdColumn, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import bcrypt from 'bcryptjs';
 import { Exclude } from 'class-transformer';
 
 @Entity('users')
 export class User {
-  @ObjectIdColumn()
-  key: number;
-  
+  @PrimaryGeneratedColumn()
+  id: number;
   @Column()
   email: string;
   @Column()
@@ -20,7 +19,7 @@ export class User {
   @OneToMany(() => Post, (post) => post.user)
   post: Post[];
   @BeforeInsert()
-  hashPassword(){
-    this.password = bcrypt.hashPassword(this.password,32);
+  hashPassword() {
+    this.password = bcrypt.hashPassword(this.password, 32);
   }
 }
