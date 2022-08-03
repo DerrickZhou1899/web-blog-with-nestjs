@@ -1,45 +1,29 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  UseInterceptors,
-  ClassSerializerInterceptor,
-} from '@nestjs/common';
+import { Controller, Post, Body, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { UserLoginDto } from './dto/user-login.dto';
+import { Response } from 'express';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
+  @Post('/login')
+  async userLogin(@Body() userLoginDto: UserLoginDto, @Res() res: Response) {
+    const { token, user } = await this.authService.login(userLoginDto);
+    res.cookie('IsAuthenticated', true, { maxAge: 2 * 60 * 60 * 1000 });
+    res.cookie('Authentication', token, {
+      httpOnly: true,
+      maxAge: 2 * 60 * 60 * 1000,
+    });
+    return res.send({ success: true, user });
+  }
+  @Post('register')
+  async userRegistration(@Body() createUserDto: CreateUserDto) {
+    return this.authService.register(createUserDto);
+  }
 
   @Post('/create')
   create(@Body() createAuthDto: CreateUserDto) {
     return this.authService.create(createAuthDto);
-  }
-
-  @Get('/find-all')
-  @UseInterceptors(ClassSerializerInterceptor)
-  findAll() {
-    return this.authService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.authService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAuthDto: UpdateUserDto) {
-    return this.authService.update(+id, updateAuthDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.authService.remove(+id);
   }
 }
