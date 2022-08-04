@@ -5,14 +5,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from './jwt.stratergy';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
     JwtModule.register({
-      secret: 'secretkey',
+      secret: 'secretKey',
       signOptions: {
-        algorithm: 'ES256',
+        //algorithm: 'ES256',
         expiresIn: '1d',
       },
     }),
@@ -21,6 +22,6 @@ import { PassportModule } from '@nestjs/passport';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, JwtStrategy],
 })
 export class AuthModule { }

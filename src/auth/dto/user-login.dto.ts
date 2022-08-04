@@ -4,6 +4,6 @@ export class UserLoginDto {
   @IsEmail()
   email: string;
   @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'User password is empty' })
   password: string;
 }

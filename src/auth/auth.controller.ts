@@ -5,11 +5,11 @@ import { Response } from 'express';
 import { CreateUserDto } from './dto/create_User.dto';
 
 @Controller('auth')
-@UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
   @Post('/login')
-  async userLogin(@Body() userLoginDto: UserLoginDto, @Res() res: Response) {
+  async userLogin(@Body(new ValidationPipe()) userLoginDto: UserLoginDto, @Res() res: Response) {
+    console.log(userLoginDto);
     const { token, user } = await this.authService.login(userLoginDto);
     console.log(user);
     res.cookie('IsAuthenticated', true, { maxAge: 2 * 60 * 60 * 1000 });

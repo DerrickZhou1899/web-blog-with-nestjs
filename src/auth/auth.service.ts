@@ -17,17 +17,17 @@ export class AuthService {
       .where('user.email = :email', { email: loginDto.email })
       .getOne();
     if (!user) {
-      throw new UnauthorizedException('Bad credentials');
+      throw new UnauthorizedException('Bad credentials - email mismatch');
     } else {
       if (await this.verifyPassword(loginDto.password, user.password)) {
-        const token = this.jwtService.signAsync({
+        const token = await this.jwtService.signAsync({
           email: user.email,
           id: user.id,
         });
         delete user.password;
         return { token, user };
       } else {
-        throw new UnauthorizedException('Bad credentials');
+        throw new UnauthorizedException('Bad credentials - password mismatch');
       }
     }
   }
@@ -40,6 +40,7 @@ export class AuthService {
   }
   async register(createUserDto: CreateUserDto) {
     const email = createUserDto.email;
+    console.log(email);
     const checkForEmail = await this.repo.findOneBy({ email: email });
     if (checkForEmail) {
       throw new BadRequestException('Email chosen');
