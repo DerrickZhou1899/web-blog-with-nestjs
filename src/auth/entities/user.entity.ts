@@ -1,6 +1,6 @@
 import { Post } from 'src/post/entities/post.entity';
 import { BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcrypt';
 import { Exclude } from 'class-transformer';
 
 @Entity('users')
@@ -10,9 +10,6 @@ export class User {
   @Column()
   email: string;
   @Column()
-  @Exclude()
-  password: string;
-  @Column()
   lastName: string;
   @Column()
   firstName: string;
@@ -20,6 +17,9 @@ export class User {
   post: Post[];
   @BeforeInsert()
   hashPassword() {
-    this.password = bcrypt.hashPassword(this.password, 32);
+    this.password = bcrypt.hashSync(this.password, 10);
   }
+  @Column()
+  @Exclude()
+  password: string;
 }
